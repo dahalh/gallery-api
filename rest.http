@@ -1,2 +1,32 @@
 ### root domain test
 GET http://localhost:8000
+
+### User API
+### get user api
+GET http://localhost:8000/api/v1/user
+
+### post user api
+POST http://localhost:8000/api/v1/user
+Content-Type: application/json
+
+{
+    "fName": "admin",
+    "lName": "admin",
+    "email": "a@a.com",
+    "phone": "01234567890",
+    "address": "sydney",
+    "dob": "2020-10-10",
+    "password": "123456"
+}
+
+### post user email verification api
+POST http://localhost:8000/api/v1/user/email-verification
+Content-Type: application/json
+
+{
+    "email": "a@a.com",
+    "emailValidationCode": "6dee254b-2387-4a23-88ce-469499ac2dfc"
+}
+
+### patch user api
+PATCH http://localhost:8000/api/v1/user

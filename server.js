@@ -19,16 +19,22 @@ dbConnect();
 
 // routers
 
+import userRouter from "./src/routers/userRouter.js";
+
+app.use("/api/v1/user", userRouter);
+
 app.get("/", (req, res) => {
   res.json({
-    message: "you have reached the admin api",
+    message: "you have reached the user api",
   });
 });
 
 // error handling
 
 app.use((err, req, res, next) => {
-  console.log(err);
+  // login in file system or time series db like cloudwatch
+
+  res.status(err.status || 400);
   res.json({
     status: "error",
     message: err.message,
