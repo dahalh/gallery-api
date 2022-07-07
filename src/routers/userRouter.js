@@ -66,17 +66,22 @@ router.post(
     const update = { status: "active" };
 
     const result = await updateUser(filter, update);
-    console.log(result);
 
-    result?._id
-      ? res.json({
-          status: "success",
-          message: "Email verified successfully. You may login now.",
-        })
-      : res.json({
-          status: "error",
-          message: "Invalid or expired verification link.",
-        });
+    if (result?._id) {
+      res.json({
+        status: "success",
+        message:
+          "Your email has been verified successfully. You may login now.",
+      });
+
+      await updateUser(filter, { emailValidationCode: "" });
+      return;
+    }
+
+    res.json({
+      status: "error",
+      message: "Invalid or expired verification link.",
+    });
   }
 );
 

@@ -24,11 +24,11 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      unique: true,
+      index: 1,
       required: true,
       trim: true,
       maxLength: [60, "Email must be less than 60 characters"],
-      unique: true,
-      index: 1,
     },
     emailValidationCode: {
       type: String,
