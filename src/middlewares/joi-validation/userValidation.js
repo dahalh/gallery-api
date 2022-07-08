@@ -1,16 +1,15 @@
 import Joi from "joi";
 
-export const newUserValidation = (req, res, next) => {
-  const schema = Joi.object({
-    fName: Joi.string().alphanum().required().max(25),
-    lName: Joi.string().alphanum().required().max(60),
-    email: Joi.string().email({ minDomainSegments: 2 }).required(),
-    phone: Joi.string().required().max(15).min(10),
-    dob: Joi.date().allow(null),
-    address: Joi.string().allow(null).allow(""),
-    password: Joi.string().required(),
-  });
+const fName = Joi.string().alphanum().required().max(25);
+const lName = Joi.string().alphanum().required().max(60);
+const email = Joi.string().email({ minDomainSegments: 2 }).required();
+const phone = Joi.string().required().max(15).min(10);
+const dob = Joi.date().allow(null);
+const address = Joi.string().allow(null).allow("");
+const password = Joi.string().required();
+const requiredStr = Joi.string().required();
 
+const validator = (schema, req, res, next) => {
   const { value, error } = schema.validate(req.body);
   console.log(error?.message);
 
@@ -24,19 +23,34 @@ export const newUserValidation = (req, res, next) => {
   next();
 };
 
-export const emailVerificationValidation = (req, res, next) => {
+export const newUserValidation = (req, res, next) => {
   const schema = Joi.object({
-    email: Joi.string().email({ minDomainSegments: 2 }).required(),
-    emailValidationCode: Joi.string().required(),
+    fName,
+    lName,
+    email,
+    phone,
+    dob,
+    address,
+    password,
   });
 
-  const { error } = schema.validate(req.body);
+  validator(schema, req, res, next);
+};
 
-  if (error) {
-    return res.json({
-      status: "error",
-      message: error.message,
-    });
-  }
-  next();
+export const emailVerificationValidation = (req, res, next) => {
+  const schema = Joi.object({
+    email,
+    emailValidationCode: requiredStr,
+  });
+
+  validator(schema, req, res, next);
+};
+
+export const loginValidation = (req, res, next) => {
+  const schema = Joi.object({
+    email,
+    password,
+  });
+
+  validator(schema, req, res, next);
 };

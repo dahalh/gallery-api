@@ -5,3 +5,7 @@ const saltRounds = 10;
 export const encryptPassword = (password) => {
   return bcrypt.hashSync(password, saltRounds);
 };
+
+export const verifyPassword = (plainPassword, hashedPassword) => {
+  return bcrypt.compareSync(plainPassword, hashedPassword);
+};

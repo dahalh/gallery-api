@@ -28,5 +28,14 @@ Content-Type: application/json
     "emailValidationCode": "6dee254b-2387-4a23-88ce-469499ac2dfc"
 }
 
+### admin login api
+POST http://localhost:8000/api/v1/user/login
+Content-Type: application/json
+
+{
+    "email": "john@example.com",
+    "password": "123456"
+}
+
 ### patch user api
 PATCH http://localhost:8000/api/v1/user
