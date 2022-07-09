@@ -65,19 +65,19 @@ router.post(
   async (req, res) => {
     console.log(req.body);
     const filter = req.body;
-    const update = { status: "active" };
+    const update = { status: "active", emailValidationCode: "" };
 
     const result = await updateUser(filter, update);
 
     if (result?._id) {
-      res.json({
+      return res.json({
         status: "success",
         message:
           "Your email has been verified successfully. You may login now.",
       });
 
-      await updateUser(filter, { emailValidationCode: "" });
-      return;
+      // await updateUser(filter, { emailValidationCode: "" });
+      // send email to the user
     }
 
     res.json({
@@ -96,6 +96,14 @@ router.post("/login", loginValidation, async (req, res, next) => {
 
     // query get user by email
     const user = await getUser({ email });
+
+    if (user.status === "inactive")
+      return res.json({
+        status: "error",
+        message:
+          "Your account is not active yet, Please check your email and follow instructions to activate your account",
+      });
+
     console.log(user);
     if (user?._id) {
       // if user exists, compare password
